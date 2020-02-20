@@ -9,11 +9,11 @@ Logs to syslog but if there is an error it will also start logging to stderr.<br
 Since this is intended to be called from cron if there are messages to stderr an e-mail alert will be generated.<br/>
 That way if an e-mail alert is send (only upon errors) we will receive all logs send to stderr, including the final success status if any.
 
-**Power Control**.<br/>
+**Power Control.**<br/>
 An additional GPIO port can be used to control the power of the sensor.<br/>
 This is optional but it solves an occasional issue with this sensor. Sometimes the sensor returns Nan values until it is powered off and on again. Restarting Raspberry won’t help in this case since the 5V GPIO pin will remain on during the power cycle.
 
-# ![Configuration file](dht22.yml)<br/>
+**![Configuration file](dht22.yml).**<br/>
 Load options from the first yaml file found ```(dht22.yml, /usr/local/etc/dht22.yml)```.<br/>
 
 ## Installation
