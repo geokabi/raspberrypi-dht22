@@ -1,0 +1,10 @@
+*~
+*.retry
+*.pyc
+*.log
+*.lock
+*.tmp
+*.swp
+.secrets/
+__pycache__/
+TODO

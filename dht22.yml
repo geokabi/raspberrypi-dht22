@@ -1,0 +1,46 @@
+# YAML Config for dht22.py 
+#
+
+# Weather Metrics options.
+WEATHER_METRICS: {
+  # SENSOR READ
+  # Adafruit_DHT sensors. Valid values:(DHT11, DHT22, AM2302).
+  sensor: "AM2302",
+
+  # Uses GPIO.BCM numbering.
+  GPIO_Data_Port: 17,
+  GPIO_Powerctl_Port: 27,
+
+  MAXIMUM_BACKOFF_TIME: 30,
+  # If the sensor returns None a power cycle will occur at every retry (Only if Power control is used).
+  # If the sensor returns bogus readings start resetting the power after retry num.: ERR_RETRIES-2 (Only if Power control is used).
+  ERR_RETRIES: 5,
+
+  POWERCTL_PORT_SET_LOW_SLEEP_TIME: 10,
+  POWERCTL_PORT_SET_HIGH_SLEEP_TIME: 10,
+}
+
+# Thingspeak options.
+#THINGSPEAK: {
+#  # THINGSPEAK POST URL
+#  THINGSPEAK_BASEURL: "https://api.thingspeak.com/update?api_key=<API_KEY_HERE>",
+#
+#  THINGSPEAK_POST_MAXIMUM_BACKOFF_TIME: 40,
+#  THINGSPEAK_POST_ERR_RETRIES: 8,
+#}
+
+# Logging options.
+# See python logging documentation for further details.
+# Formating string as per logging.Formatter and logging.LogRecord python classes.
+# Syslog facility as per logging.handlers.SysLogHandler.
+# Valid logging levels: DEBUG, INFO, WARNING and ERROR.
+LOGGING_OPTIONS : {
+  'syslog_logformat'  : 'dht22:[%(levelname)8s]: %(message)s',
+  'syslog_level'      : 'DEBUG',
+  'syslog_facility'   : 'LOG_LOCAL1',
+  'stderr_logformat'  : '%(asctime)s [%(levelname)8s]: %(message)s',
+  'stderr_level'      : 'DEBUG',
+  'stderr_always'     : False,
+  'stderr_on_errors'  : True,
+}
+
