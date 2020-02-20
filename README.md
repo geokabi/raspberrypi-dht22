@@ -1,4 +1,3 @@
-### raspberrypi-dht22
 ### Temperature/Humidity monitoring using Raspberry + DHT22 Sensor with programmable power control.
 
 ![Logo](photos/DHT22%26Circuit_small.jpg)
