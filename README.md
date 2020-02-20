@@ -20,6 +20,8 @@ Load options from the first yaml file found ```(dht22.yml, /usr/local/etc/dht22.
 - Tested on Raspbian Buster version: February 2020, release date: 2020-02-13.
 - Requires Python 3.6 or higher.
 
+**Deploy with ![Ansible](ansible/) or follow the below steps.**
+
 Install additional debian packages.
 ```sh
 $ apt-get install python3-pip python3-setuptools python3-urllib3 python3-yaml python3-rpi.gpio

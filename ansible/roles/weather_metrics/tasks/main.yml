@@ -1,0 +1,61 @@
+---
+# tasks file for weather_metrics
+- name: Install packages
+  apt: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-pip
+    - python3-setuptools
+    - python3-urllib3
+    - python3-yaml
+    - python3-rpi.gpio
+
+- pip:
+    name: "Adafruit-DHT"
+    executable: "pip3"
+    extra_args: "--user"
+
+- name: copy dht22 config file
+  template:
+    src: dht22.yml.j2
+    dest: /usr/local/etc/dht22.yml
+    owner: root
+    group: staff
+    mode: 0600
+
+- name: copy dht22.py
+  copy:
+    src: files/dht22.py
+    dest: /usr/local/bin/dht22.py
+    owner: root
+    group: staff
+    mode: 0755
+
+- name: Create dht22 log directory
+  file:
+    path: "/var/local/dht22"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+    
+- name: cron job for dht22.py - Set Power control port on boot
+  cron:
+    name: "dht22_Powerctl"
+    special_time: reboot
+    user: root
+    job: ': dht22_Powerctl ; /usr/bin/gpio -g mode {{ dht22_powerctl_port }} output && /usr/bin/gpio -g write {{ dht22_powerctl_port }} 1'
+  when: dht22_powerctl_port is defined and dht22_powerctl_port
+
+- name: cron job for dht22.py
+  cron:
+    name: "dht22"
+    minute: "*/10"
+    hour: "*"
+    day: "*" 
+    month: "*" 
+    weekday: "*" 
+    user: root
+    job: ': dht22 ; /usr/local/bin/dht22.py 1>>/var/local/dht22/$(/bin/date --utc +\%Y\%m).csv'
+
