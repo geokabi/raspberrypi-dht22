@@ -52,7 +52,7 @@ Optionally add a cron job that will power on the sensor on boot.
 Otherwise the script will power on the sensor upon first run but in this case expect a delay on the first run.
 
 ## ![Schematics](schematics/)
-Created with ![gEDA](http://www.geda-project.org)
+Created with [gEDA](http://www.geda-project.org)
 
 # Sensor Circuit
 ![Sensor circuit](schematics/DHT22_circuit_small.png)
