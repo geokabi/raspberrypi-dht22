@@ -2,7 +2,7 @@
 
 ![Logo](photos/DHT22%26Circuit_small.jpg)
 
-## ![Weather Metrics script](dht22.py)
+## [Weather Metrics script](dht22.py)
 
 Read Sensor metrics, output to stdout (CSV format) and optionally post them to ThingSpeak.<br/>
 Logs to syslog but if there is an error it will also start logging to stderr.<br/>
@@ -13,14 +13,14 @@ That way if an e-mail alert is send (only upon errors) we will receive all logs 
 An additional GPIO port can be used to control the power of the sensor.<br/>
 This is optional but it solves an occasional issue with this sensor. Sometimes the sensor returns Nan values until it is powered off and on again. Restarting Raspberry won’t help in this case since the 5V GPIO pin will remain on during the power cycle.
 
-**![Configuration file](dht22.yml).**<br/>
+**[Configuration file](dht22.yml).**<br/>
 Load options from the first yaml file found ```(dht22.yml, /usr/local/etc/dht22.yml)```.<br/>
 
 ## Installation
 - Tested on Raspbian Buster version: February 2020, release date: 2020-02-13.
 - Requires Python 3.6 or higher.
 
-**Deploy with ![Ansible](ansible/) or follow the below steps.**
+**Deploy with [Ansible](ansible/) or follow the below steps.**
 
 Install additional debian packages.
 ```sh
@@ -51,7 +51,7 @@ Optionally add a cron job that will power on the sensor on boot.
 ```
 Otherwise the script will power on the sensor upon first run but in this case expect a delay on the first run.
 
-## ![Schematics](schematics/)
+## [Schematics](schematics/)
 Created with [gEDA](http://www.geda-project.org)
 
 # Sensor Circuit
