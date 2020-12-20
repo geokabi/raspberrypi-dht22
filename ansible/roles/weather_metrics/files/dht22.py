@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 # vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
 #
-# Ansible managed
 r"""
 Weather Metrics script.
 
 Read Sensor metrics, output to stdout (CSV format) and optionally post them to ThingSpeak.
 Logs to syslog but if there is an error it will also start logging to stderr.
-Since this is intended to be called from cron if there are messages to stderr an e-mail alert will be generated.
-That way if an e-mail alert is send (only upon errors) we will receive all logs send to stderr, including the final success status if any.
+Since this is intended to be called from cron if it fails a mail alert will be generated with the messages send to stderr.
+That way if a mail alert is send we will receive all logs since the first error.
 
 An additional GPIO port can be used to control the power of the sensor.
-This is optional but it solves an occasional issue with this sensor. Sometimes the sensor returns Nan values until it is powered off and on again. Restarting Raspberry won’t help in this case since the 5V GPIO pin will remain on during the power cycle.
+This is optional but it solves a rare issue with this sensor. Sometimes the sensor returns Nan values until it is powered off and on again.
+Restarting Raspberry won’t help in this case since the 5V GPIO pin will remain on during the power cycle.
 
 Configuration file:
 Load options from the first yaml file found (dht22.yml, /usr/local/etc/dht22.yml).
@@ -22,8 +22,9 @@ Optionally the below cron job will configure the Power control port.
 Otherwise the script will power on the sensor upon first run.
 @reboot /usr/bin/gpio -g mode <GPIO_Powerctl_Port> output && /usr/bin/gpio -g write <GPIO_Powerctl_Port> 1
 
-Crontab entry that runs the script every 10 minutes and appends stdout to a monthly file:
-*/10 * * * * : Weather_Metrics ; /usr/local/bin/dht.py 1>>/var/local/dht22/$(/bin/date +\%Y\%m).csv
+Crontab entry that runs the script every 10 minutes and appends stdout to a monthly file.
+Any output sent to stderr is captured. In case the script fails at the end, cron will mail the captured messages.
+*/10 * * * * : Weather_Metrics ; err_out=$( (/usr/local/bin/dht22.py 1>>/var/local/dht22/$(/bin/date --utc +\%Y\%m).csv) 2>&1 ) || echo "$err_out"
 
 """
 
