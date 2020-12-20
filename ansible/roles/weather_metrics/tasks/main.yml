@@ -57,5 +57,5 @@
     month: "*" 
     weekday: "*" 
     user: root
-    job: ': dht22 ; /usr/local/bin/dht22.py 1>>/var/local/dht22/$(/bin/date --utc +\%Y\%m).csv'
+    job: ': dht22 ; err_out=$( (/usr/local/bin/dht22.py 1>>/var/local/dht22/$(/bin/date --utc +\%Y\%m).csv) 2>&1 ) || echo "$err_out"'
 

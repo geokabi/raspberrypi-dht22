@@ -6,12 +6,13 @@
 
 Read Sensor metrics, output to stdout (CSV format) and optionally post them to ThingSpeak.<br/>
 Logs to syslog but if there is an error it will also start logging to stderr.<br/>
-Since this is intended to be called from cron if there are messages to stderr an e-mail alert will be generated.<br/>
-That way if an e-mail alert is send (only upon errors) we will receive all logs send to stderr, including the final success status if any.
+Since this is intended to be called from cron if it fails a mail alert will be generated with the messages send to stderr.<br/>
+That way if a mail alert is send we will receive all logs since the first error.
 
 **Power Control.**<br/>
 An additional GPIO port can be used to control the power of the sensor.<br/>
-This is optional but it solves an occasional issue with this sensor. Sometimes the sensor returns Nan values until it is powered off and on again. Restarting Raspberry won’t help in this case since the 5V GPIO pin will remain on during the power cycle.
+This is optional but it solves a rare issue with this sensor. Sometimes the sensor returns Nan values until it is powered off and on again.<br/>
+Restarting Raspberry won’t help in this case since the 5V GPIO pin will remain on during the power cycle.
 
 **[Configuration file](dht22.yml).**<br/>
 Load options from the first yaml file found ```(dht22.yml, /usr/local/etc/dht22.yml)```.<br/>
@@ -39,9 +40,10 @@ Create directory for csv files.
 $ mkdir /var/local/dht22
 ```
 
-Crontab entry that runs the script every 10 minutes and appends stdout to a monthly file:
+Crontab entry that runs the script every 10 minutes and appends stdout to a monthly file.<br/>
+Any output sent to stderr is captured. In case the script fails at the end, cron will mail the captured messages.
 ```
-*/10 * * * * : Weather_Metrics ; /usr/local/bin/dht22.py 1>>/var/local/dht22/$(/bin/date +\%Y\%m).csv
+*/10 * * * * : Weather_Metrics ; err_out=$( (/usr/local/bin/dht22.py 1>>/var/local/dht22/$(/bin/date --utc +\%Y\%m).csv) 2>&1 ) || echo "$err_out"
 ```
 
 If Power control port is used:<br/>
