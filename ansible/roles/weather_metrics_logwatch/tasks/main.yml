@@ -1,0 +1,26 @@
+---
+# tasks file for weather_metrics_logwatch
+- name: Install logwatch
+  apt:
+    name:
+      - logwatch
+      - libdate-manip-perl
+    state: present
+    install_recommends: no
+
+- name: Copy weather_metrics_dht22 service configuration
+  copy:
+    src: "conf/services/weather_metrics_dht22.conf"
+    dest: "/etc/logwatch/conf/services/weather_metrics_dht22.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy weather_metrics_dht22 service script
+  copy:
+    src: "scripts/services/weather_metrics_dht22"
+    dest: "/etc/logwatch/scripts/services/weather_metrics_dht22"
+    owner: root
+    group: root
+    mode: 0755
+

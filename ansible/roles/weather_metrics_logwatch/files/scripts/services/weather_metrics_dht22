@@ -1,0 +1,58 @@
+#!/usr/bin/perl
+
+use strict;
+my $Debug = $ENV{'LOGWATCH_DEBUG'} || 0;
+my $Detail = $ENV{'LOGWATCH_DETAIL_LEVEL'} || 0;
+my $ThisLine;
+my %Errors;
+my %Warnings;
+my %Unmatched;
+
+
+while (defined($ThisLine = <STDIN>)) {
+  chomp($ThisLine);
+  if ($Debug) {
+    print "$ThisLine\n";
+  }
+
+  if ( ( $ThisLine =~ /\[\s*DEBUG\s*\]/ ) or
+        ( $ThisLine =~ /\[\s*INFO\s*\]/ ) ) {
+    # We don't care about these
+  }
+  elsif ( $ThisLine =~ /\[\s*ERROR\s*\]\s*(\N+)/ ) {
+    $Errors{$ThisLine}++;
+  }
+  elsif ( $ThisLine =~ /\[\s*WARNING\s*\]\s*(\N+)/ ) {
+    $Warnings{$ThisLine}++;
+  }
+  else {
+    $Unmatched{$ThisLine}++;
+  }
+}
+
+if ( keys %Errors ) {
+  print "\n*** ERRORS ***\n";
+  foreach my $line (sort { $Errors{$b} <=> $Errors{$a} } keys %Errors) {
+    print "    " . $Errors{$line} . " Time(s): " . "$line\n"
+  }
+  print "\n";
+}
+
+if ( (keys %Warnings) and ($Detail >= 5) ) {
+  print "\n*** WARNINGS ***\n";
+  foreach my $line (sort { $Warnings{$b} <=> $Warnings{$a} } keys %Warnings) {
+    print "    " . $Warnings{$line} . " Time(s): " . "$line\n"
+  }
+  print "\n";
+}
+
+if ( keys %Unmatched ) {
+  print "\n*** UNMATCHED LINES ***\n";
+  foreach my $line (sort { $Unmatched{$b} <=> $Unmatched{$a} } keys %Unmatched) {
+    print "    " . $Unmatched{$line} . " Time(s): " . "$line\n"
+  }
+  print "\n";
+}
+
+exit(0);
+
